@@ -22,6 +22,10 @@ This R script is designed to process FASTQ files
    - The function is designed to capture and save any warnings generated during the script execution to a specified file. 
         -It uses `withCallingHandlers` to capture warnings and writes them to a file.
 
+
+When I run the file I get the following message: WARNING: ignoring environment value of R_HOME
+There were 50 or more warnings (use warnings() to see the first 50).
+
 5. Integration of warning:
    - In addition to processing FASTQ files, the script also captures any warnings generated during this process and writes them to a file named "metadata_warnings.txt".
 
