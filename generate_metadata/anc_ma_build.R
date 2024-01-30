@@ -1,13 +1,10 @@
 #!/usr/bin/Rscript
 
 # Load required library
-
 suppressPackageStartupMessages(library(stringr))
 
 # Function to process FASTQ file
 main = function(filename) {
-    
-    
     
     # Determine if the file is gzipped and choose the appropriate function to read it
     read_func <- ifelse(grepl("\\.gz$", filename), gzfile, file)

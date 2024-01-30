@@ -1,0 +1,27 @@
+This R script is designed to process FASTQ files 
+
+
+1. (main) function processes a single FASTQ file.
+    - It first checks if the file is gzipped (`.gz`): (`gzfile` for gzipped files, `file` for others) to open the file.
+    - The first 400 lines of the file are read to extract sequencing information.
+    - It extracts the flowcell and lane information from the first line of the file.
+    - An index array is initialized to store indices extracted from every fourth line 
+        -Handling cases where the sequencing index might not exist (e.g., non-multiplexed files) by inserting "NA".
+    - The most frequent index is determined.
+    - The run date is set dynamically based on the filename.
+    - Various identifiers (like read group ID, platform unit, platform, etc.) are constructed.
+    - The function returns a list of extracted metadata.
+
+2. Non-interactive mode:
+   - The script checks if it's running in non-interactive mode.
+   - It defines input (FASTQ files directory) and output (metadata file) paths.
+   - Lists all FASTQ files in the specified directory and processes each file using the `main` function.
+   - The results are combined into a data frame and written to the output file.
+
+3. (write_warnings_to_file) function to write warnings to a file :
+   - The function is designed to capture and save any warnings generated during the script execution to a specified file. 
+        -It uses `withCallingHandlers` to capture warnings and writes them to a file.
+
+5. Integration of warning:
+   - In addition to processing FASTQ files, the script also captures any warnings generated during this process and writes them to a file named "metadata_warnings.txt".
+
