@@ -2,6 +2,7 @@
 
 # Load required library
 suppressPackageStartupMessages(library(stringr))
+#install.packages('readr', dependencies = TRUE, repos='http://cran.rstudio.com/')
 
 # Function to process FASTQ file
 main = function(filename) {
@@ -17,7 +18,7 @@ main = function(filename) {
     lines <- readLines(con, n = 400)
 
     # Split the first sequencing identifier to extract information
-    a <- str_split(lines[1], "[: ]")[[1]]
+    a <- str_split(as.character(lines[1], "[: ]"))[[1]]
     flowcell <- a[3]
     lane <- a[4]
 
