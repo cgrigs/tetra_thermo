@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIRECTORY="/scratch/cgrigsb2/TetMA/Tthermophila_fastqs"
+DIRECTORY="/scratch/cgrigsb2/tet/TetMA/Tthermophila_fastqs/"
 
 OUTPUT_FILE="corrupt_files_list.txt"
 
