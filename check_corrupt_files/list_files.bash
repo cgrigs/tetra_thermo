@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DIRECTORY="/scratch/cgrigsb2/TetMA/Tthermophila_fastqs/"
+DIRECTORY="/scratch/cgrigsb2/tet/TetMA/Tthermophila_fastqs/"
 OUTPUT_FILE="file_names_list.txt"
 
 # Empty or create the file to store file names
