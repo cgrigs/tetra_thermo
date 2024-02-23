@@ -48,7 +48,7 @@ main = function(filename) {
     rg_pu <- paste(flowcell, lane, sep = ".")
     rg_pl <- PL
     rg_lb_original <- str_extract(basename(filename), "^[-\\w]+(?=_S\\d+_L\\d\\d\\d)")
-    str_replace(rg_lb_original, "Anc-(\\d+)-([A-Za-z]+)", "AncGE\\1\\2")
+    str_replace = str_replace(rg_lb_original, "Anc-(\\d+)-([A-Za-z]+)", "AncGE\\1\\2")
     rg_lb = rg_lb_original
     #rg_lb <- gsub("anc-", "AncGE", rg_lb)
     rg_sm <- rg_lb  # Assign transformed rg_lb to rg_sm
@@ -63,7 +63,7 @@ main = function(filename) {
 # Script execution for non-interactive mode
 if (!interactive() || TRUE) {
     data_dir <- "/scratch/cgrigsb2/tet/TetMA/Tthermophila_fastqs/"
-    output_file <- "/home/cgrigsb2/tet/generate_metadata/metadata.tsv"
+    output_file <- "/home/cgrigsb2/tet/tetra_thermo/generate_metadata/metadata.tsv"
 
     fastq_files <- list.files(path = data_dir, pattern = "\\.fastq\\.gz$", full.names = TRUE)
     results <- lapply(fastq_files, main)
