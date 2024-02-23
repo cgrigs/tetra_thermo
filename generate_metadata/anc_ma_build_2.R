@@ -48,8 +48,9 @@ main = function(filename) {
     rg_pu <- paste(flowcell, lane, sep = ".")
     rg_pl <- PL
     rg_lb_original <- str_extract(basename(filename), "^[-\\w]+(?=_S\\d+_L\\d\\d\\d)")
-    rg_lb <- gsub("anc-(\\d+)-([a-z])", "AncGE\\1\\U\\2", rg_lb_original, perl=TRUE)
-    rg_lb <- gsub("anc-", "AncGE", rg_lb)
+    str_replace(rg_lb_original, "Anc-(\\d+)-([A-Za-z]+)", "AncGE\\1\\2")
+    rg_lb = rg_lb_original
+    #rg_lb <- gsub("anc-", "AncGE", rg_lb)
     rg_sm <- rg_lb  # Assign transformed rg_lb to rg_sm
     base <- str_extract(basename(filename), "^[-\\w]+_S\\d+_L\\d\\d\\d(?=_R[12])")
 
