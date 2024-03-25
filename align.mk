@@ -29,8 +29,9 @@ bam_mac_aligned: $(BAM_ALN_FILES_MAC)
 
 .PHONY: bam_mac_aligned
 
+
 # Align fastq files to the mac refrence using bwa mem
-data/bam_mac_aligned/bam_aln/%.bam: data/fastq/%_R1_001.fastq data/fastq/%_R2_001.fastq
+data/bam_mac_aligned/bam_aln/%.bam: data/fastq/%_R1_001.fastq.gz data/fastq/%_R2_001.fastq.gz
 	bash scripts/align_fastq.bash $(MAC_REF) $^ $@
 
 data/bam_mac_aligned/bam_aln/%.bam: readgroups.tsv
@@ -44,10 +45,15 @@ data/bam_mac_aligned/bam_fixmate/%.bam: data/bam_mac_aligned/bam_aln/%.bam
 	bash scripts/fix_matepairs.bash $< $@
 
 #step 3
-BAM_MERGED=$(addsuffix .bam,$(BASENAMES))
+BAM_MERGED=$(addsuffix .bam,$(BAM_FIXMATE_FILES))
 BAM_MERGED_FILES=$(addprefix data/bam_mac_aligned/bam_merged/,$(BAM_MERGED))
-bam_merged: $(BAM_MERGED_FILES)
+
+#BAM_MERGED_FILES=$(addprefix data/bam_mac_aligned/bam_merged/,$(BAM_FIXMATE_FILES))
+bam_merged: $(BAM_MERGED)
 .PHONY: bam_merged 
+
+data/text.txt:
+	echo "test" > $@
 
 data/bam_mac_aligned/bam_merged/%.bam : data/bam_mac_aligned/bam_fixmate/%_L001.bam data/bam_mac_aligned/bam_fixmate/%_L002.bam data/bam_mac_aligned/bam_fixmate/%_L003.bam data/bam_mac_aligned/bam_fixmate/%_L004.bam
 	bash scripts/merge_lanes.bash $@ $^
@@ -74,22 +80,6 @@ bam_mac_aligned_dedup: $(BAM_DEDUP_FILES)
 data/bam_mac_aligned/bam_dedup/%.bam : data/bam_mac_aligned/bam_sort/%.bam
 	bash scripts/dedup.bash $^ $@ data/bam_mac_aligned/bam_dedup/$*_dedup_metrics.txt
 
-#step 5 giant mic files by contig
-CONTIG_CRAMS=$(addsuffix .cram,$(CONTIGS))
-CONTIG_FILES=$(addprefix data/bam_mac_aligned/merged_contigs/,$(CONTIG_CRAMS))
 
-merge_contigs_mic: $(CONTIG_FILES)
-.PHONY: merge_contigs_mic
-data/bam_mac_aligned/merged_contigs/%.cram: $(BAM_DEDUP_FILES) 
-	samtools merge -R $* --reference $(MAC_REF) --write-index $@ $^
-    
-#step 7
-VCFS = $(notdir $(subst .cram,.vcf,$(CONTIG_FILES)))
-VCF_FILES=$(addprefix data/variant_calls/,$(VCFS))
-
-vcf: $(VCF_FILES)
-.PHONY: vcf
-data/variant_calls/%.vcf: data/bam_mac_aligned/merged_contigs/%.cram
-	bash scripts/haplotypecaller.bash $(MAC_REF) $^ $@
 
 
